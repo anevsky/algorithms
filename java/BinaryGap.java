@@ -7,11 +7,7 @@ package com.alexnevsky.algorithms;
  * Find longest sequence of zeros in binary representation of an integer.
  */
 public class BinaryGap {
-
-    // Iterations
-    //
-    // Find longest sequence of zeros
-    // in binary representation of an integer.
+    
     public static int binaryGap(int N) {
         int max = 0;
 
