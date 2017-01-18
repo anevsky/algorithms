@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  "github.com/anevsky/algorithms/search"
+  "github.com/anevsky/algorithms/go/search"
 )
 
 func main() {
