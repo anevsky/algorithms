@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-    fmt.Printf("hello, world\n")
+    fmt.Printf("Hello, Go!\n")
 
     a := []int{9, 4, 2, 8, 3, 5, 7, 10, 1, 6}
     fmt.Println(a)
