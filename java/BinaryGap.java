@@ -7,8 +7,8 @@ package com.alexnevsky.algorithms;
  * Find longest sequence of zeros in binary representation of an integer.
  */
 public class BinaryGap {
-    
-    public static int binaryGap(int N) {
+
+    public static int solution(int N) {
         int max = 0;
 
         String binaryString = Integer.toBinaryString(N);
