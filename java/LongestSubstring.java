@@ -66,6 +66,7 @@ public class LongestSubstring {
             for (char c : s.toCharArray()) {
                 if (Character.isUpperCase(c)) {
                     result = Math.max(result, s.length());
+                    break;
                 }
             }
         }
