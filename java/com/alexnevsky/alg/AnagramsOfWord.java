@@ -1,4 +1,4 @@
-package com.alexnevsky.algorithms;
+package com.alexnevsky.alg;
 
 import org.apache.commons.lang3.StringUtils;
 

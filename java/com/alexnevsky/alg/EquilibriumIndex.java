@@ -1,4 +1,4 @@
-package com.alexnevsky.algorithms;
+package com.alexnevsky.alg;
 
 /**
  * Created by Alex Nevsky on 1/28/17.

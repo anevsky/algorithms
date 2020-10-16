@@ -1,4 +1,4 @@
-package com.alexnevsky.algorithms;
+package com.alexnevsky.alg;
 
 import java.util.Arrays;
 
