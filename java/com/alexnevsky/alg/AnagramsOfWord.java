@@ -1,7 +1,5 @@
 package com.alexnevsky.alg;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,22 +49,22 @@ public class AnagramsOfWord {
             return false;
         }
 
-        if (a.length() == b.length()) {
-            boolean isSameLetters = true;
-
-            char[] letters = a.toCharArray();
-            for(int i = 0; i < letters.length && isSameLetters; ++i) {
-                // count that every letter occurs the same number of times in each word
-                isSameLetters = StringUtils.countMatches(a, letters[i]) == StringUtils.countMatches(b, letters[i]);
-            }
-
-            if (isSameLetters) {
-                Set<Character> aSet = new HashSet<>(a.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
-                Set<Character> bSet = new HashSet<>(b.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
-                // check if words have the same letters
-                result = aSet.equals(bSet);
-            }
-        }
+//        if (a.length() == b.length()) {
+//            boolean isSameLetters = true;
+//
+//            char[] letters = a.toCharArray();
+//            for(int i = 0; i < letters.length && isSameLetters; ++i) {
+//                // count that every letter occurs the same number of times in each word
+//                isSameLetters = StringUtils.countMatches(a, letters[i]) == StringUtils.countMatches(b, letters[i]);
+//            }
+//
+//            if (isSameLetters) {
+//                Set<Character> aSet = new HashSet<>(a.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
+//                Set<Character> bSet = new HashSet<>(b.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
+//                // check if words have the same letters
+//                result = aSet.equals(bSet);
+//            }
+//        }
 
         return result;
     }
