@@ -20,32 +20,31 @@ public class FastCollinearPoints {
     if (points == null) {
       throw new IllegalArgumentException("argument to constructor is null");
     }
-    if (points.length < 4) {
-      throw new IllegalArgumentException("less then 4 points provided");
-    }
-    for (Point p : points) {
-      if (p == null) {
-        throw new IllegalArgumentException("one of the points is null");
-      }
-    }
 
-    MergeX.sort(points);
-
-    for (int i = 0; i < points.length - 1; i++) {
-      if ((points[i]).compareTo(points[i + 1]) == 0) {
-        throw new IllegalArgumentException("a repeated point: " + points[i]);
+    // create local copy with null and repeat checks
+    Point[] mPoints = new Point[points.length];
+    for (int i = 0; i < points.length; i++) {
+      if (points[i] == null) throw new IllegalArgumentException("one of the points is null");
+      for (int j = 0; j < i; j++) {
+        if (mPoints[j].compareTo(points[i]) == 0) throw new IllegalArgumentException("a repeated point");
       }
+      mPoints[i] = points[i];
     }
 
     ls = new ArrayList<>();
 
+    List<Point> extremes = new ArrayList<>();
     for (int p = 0; p < points.length; p++) {
-      Point pp = points[p];
-      Point[] ax = Arrays.copyOfRange(points, p + 1, points.length);
-      MergeX.sort(ax, pp.slopeOrder());
-      for (int q = 0; q < ax.length - 3; q = q + 3) {
-        if (ax[q].slopeTo(pp) == ax[q + 1].slopeTo(pp) && ax[q + 1].slopeTo(pp) == ax[q + 2].slopeTo(pp)) {
-          ls.add(new LineSegment(points[p], points[q + 2]));
+      Point origin = points[p];
+      Point[] ax = Arrays.copyOf(points, points.length);
+      MergeX.sort(ax, origin.slopeOrder());
+      for (int q = 0; q < ax.length - 2; q++) {
+        if (ax[q].slopeTo(origin) == ax[q + 1].slopeTo(origin)
+            && ax[q + 1].slopeTo(origin) == ax[q + 2].slopeTo(origin)
+            && !extremes.contains(ax[q + 2]
+        )) {
+          ls.add(new LineSegment(origin, ax[q + 2]));
+          extremes.add(ax[q + 2]);
         }
       }
     }

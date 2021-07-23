@@ -19,21 +19,15 @@ public class BruteCollinearPoints {
     if (points == null) {
       throw new IllegalArgumentException("argument to constructor is null");
     }
-    if (points.length < 4) {
-      throw new IllegalArgumentException("less then 4 points provided");
-    }
-    for (Point p : points) {
-      if (p == null) {
-        throw new IllegalArgumentException("one of the points is null");
-      }
-    }
 
-    MergeX.sort(points);
-
-    for (int i = 0; i < points.length - 1; i++) {
-      if ((points[i]).compareTo(points[i + 1]) == 0) {
-        throw new IllegalArgumentException("a repeated point: " + points[i]);
+    // create local copy with null and repeat checks
+    Point[] mPoints = new Point[points.length];
+    for (int i = 0; i < points.length; i++) {
+      if (points[i] == null) throw new IllegalArgumentException("one of the points is null");
+      for (int j = 0; j < i; j++) {
+        if (mPoints[j].compareTo(points[i]) == 0) throw new IllegalArgumentException("a repeated point");
       }
+      mPoints[i] = points[i];
     }
 
     ls = new ArrayList<>();
@@ -41,23 +35,18 @@ public class BruteCollinearPoints {
     // To check whether the 4 points p, q, r, and s are collinear,
     // check whether the three slopes between p and q, between p and r,
     // and between p and s are all equal.
-    List<Point> starters = new ArrayList<>();
-    for (int p = 0; p < points.length; p++) {
-      for (int q = 1; q < points.length; q++) {
-        for (int r = 2; r < points.length; r++) {
-          for (int s = 3; s < points.length; s++) {
-            double s1 = points[p].slopeTo(points[q]);
-            double s2 = points[p].slopeTo(points[r]);
-            double s3 = points[p].slopeTo(points[s]);
-            if (s1 == s2 && s2 == s3
-                && points[p].compareTo(points[q]) != 0
-                && points[q].compareTo(points[r]) != 0
-                && points[r].compareTo(points[s]) != 0
-                && s - p == 4
-                && !starters.contains(points[p])
-            ) {
-              starters.add(points[p]);
-              ls.add(new LineSegment(points[p], points[s]));
+    for (int p = 0; p < mPoints.length; p++) {
+      for (int q = p + 1; q < mPoints.length; q++) {
+        double s1 = mPoints[p].slopeTo(mPoints[q]);
+        for (int r = q + 1; r < mPoints.length; r++) {
+          double s2 = mPoints[p].slopeTo(mPoints[r]);
+          if (s1 != s2) continue;
+          for (int s = r + 1; s < mPoints.length; s++) {
+            double s3 = mPoints[p].slopeTo(mPoints[s]);
+            if (s1 == s2 && s2 == s3) {
+              Point[] pp = {mPoints[p], mPoints[q], mPoints[r], mPoints[s]};
+              MergeX.sort(pp);
+              ls.add(new LineSegment(pp[0], pp[3]));
             }
           }
         }
