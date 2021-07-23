@@ -36,15 +36,18 @@ public class FastCollinearPoints {
     List<Point> extremes = new ArrayList<>();
     for (int p = 0; p < points.length; p++) {
       Point origin = points[p];
-      Point[] ax = Arrays.copyOf(points, points.length);
+      if (extremes.contains(origin)) continue;
+      Point[] ax = Arrays.copyOfRange(points, p, points.length);
       MergeX.sort(ax, origin.slopeOrder());
-      for (int q = 0; q < ax.length - 2; q++) {
-        if (ax[q].slopeTo(origin) == ax[q + 1].slopeTo(origin)
-            && ax[q + 1].slopeTo(origin) == ax[q + 2].slopeTo(origin)
-            && !extremes.contains(ax[q + 2]
-        )) {
-          ls.add(new LineSegment(origin, ax[q + 2]));
-          extremes.add(ax[q + 2]);
+      for (int q = 0; q < ax.length - 3; q++) {
+        if (ax[q + 1].slopeTo(origin) == ax[q + 2].slopeTo(origin)
+            && ax[q + 2].slopeTo(origin) == ax[q + 3].slopeTo(origin)
+        ) {
+          Point[] pp = {origin, ax[q + 1], ax[q + 2], ax[q + 3]};
+          MergeX.sort(ax);
+          ls.add(new LineSegment(origin, pp[1]));
+          extremes.add(origin);
+          extremes.add(pp[1]);
         }
       }
     }
