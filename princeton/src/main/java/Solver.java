@@ -10,13 +10,11 @@ import edu.princeton.cs.algs4.StdOut;
  */
 public class Solver {
 
-  private final Board initial;
   private SearchNode solution;
 
   // find a solution to the initial board (using the A* algorithm)
   public Solver(Board initial) {
-    this.initial = initial;
-    find();
+    search(initial);
   }
 
   // is the initial board solvable? (see below)
@@ -45,28 +43,32 @@ public class Solver {
     }
   }
 
-  private void find() {
-    solution = search(new MinPQ<>(), initial, initial.manhattan());
-    if (solution == null) {
-      final Board twin = initial.twin();
-      solution = search(new MinPQ<>(), twin, twin.manhattan());
-    }
-  }
+  private void search(Board b) {
+    SearchNode initial = new SearchNode(b, null, 0, b.manhattan());
+    SearchNode twin = new SearchNode(b.twin(), null, 0, b.twin().manhattan());
 
-  private SearchNode search(MinPQ<SearchNode> q, Board b, int m) {
-    q.insert(new SearchNode(b, null, 0, m));
-    SearchNode min = q.delMin();
+    MinPQ<SearchNode> q1 = new MinPQ<>();
+    MinPQ<SearchNode> q2 = new MinPQ<>();
 
-    int maxMovesBarrier = initial.dimension() * initial.dimension() * initial.dimension();
-    while (!min.board.isGoal() && q.size() <= maxMovesBarrier) {
-      for (Board n : min.board.neighbors()) {
-        if (min.prev == null) q.insert(new SearchNode(n, min, min.moves + 1, n.manhattan()));
-        else if (!min.prev.board.equals(n)) q.insert(new SearchNode(n, min, min.moves + 1, n.manhattan()));
+    q1.insert(initial);
+    q2.insert(twin);
+
+    int maxMovesBarrier = initial.board.dimension() * initial.board.dimension() * initial.board.dimension();
+
+    while (!initial.board.isGoal() && !twin.board.isGoal() && q1.size() < maxMovesBarrier) {
+      initial = q1.delMin();
+      twin = q2.delMin();
+
+      for (Board n : initial.board.neighbors()) {
+        if (initial.prev == null || !initial.prev.board.equals(n)) q1.insert(new SearchNode(n, initial, initial.moves + 1, n.manhattan()));
       }
-      min = q.delMin();
+
+      for (Board n : twin.board.neighbors()) {
+        if (twin.prev == null || !twin.prev.board.equals(n)) q2.insert(new SearchNode(n, twin, twin.moves + 1, n.manhattan()));
+      }
     }
 
-    return min.board.isGoal() ? min : null;
+    solution = initial.board.isGoal() ? initial : null;
   }
 
   private class SearchNode implements Comparable<SearchNode> {
