@@ -33,7 +33,7 @@ public class FastCollinearPoints {
 
     ls = new ArrayList<>();
 
-    // wrong
+    // not 100% correct
     List<Point> extremes = new ArrayList<>();
     for (int p = 0; p < points.length; p++) {
       Point origin = points[p];

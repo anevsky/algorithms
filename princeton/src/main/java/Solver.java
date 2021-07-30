@@ -43,6 +43,7 @@ public class Solver {
     }
   }
 
+  // A*
   private void search(Board b) {
     SearchNode initial = new SearchNode(b, null, 0, b.manhattan());
     SearchNode twin = new SearchNode(b.twin(), null, 0, b.twin().manhattan());
