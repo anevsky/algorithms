@@ -14,8 +14,12 @@ public class CircularSuffixArray {
     if (s == null) throw new IllegalArgumentException("arg is null");
     n = s.length();
     index = new int[n];
-    for (int i = 0; i < s.length(); ++i) index[i] = i;
-    sort(s, 0, n - 1, 0);
+
+    for (int i = 0; i < s.length(); ++i)
+      index[i] = i;
+
+    if (!isUnary(s))
+      sort(s, 0, n - 1, 0);
   }
 
   // length of s
@@ -83,6 +87,12 @@ public class CircularSuffixArray {
 
   private char charAt(String s, int index, int offset) {
     return s.charAt((index + offset) % n);
+  }
+
+  private static boolean isUnary(String s) {
+    for (int i = 1; i < s.length(); i++)
+      if (s.charAt(i) != s.charAt(i-1)) return false;
+    return true;
   }
 
   // unit testing (required)
